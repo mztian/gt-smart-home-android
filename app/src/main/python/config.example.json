@@ -1,6 +1,6 @@
 {
   "gateway": {
-    "ip": "192.168.11.3",
+    "ip": "192.168.0.58",
     "port": 4196
   },
   "lights": [
@@ -35,21 +35,21 @@
     { "name": "新风", "dev_no": "0x03", "dev_ch": "0x01", "ch_type": "0x59", "zone": "全屋", "default_speed": "high", "MQTTTopic": "xinfeng005" }
   ],
   "acs": [
-    { "name": "客厅空调", "dev_no": "0x01", "dev_ch": "0x04", "zone": "客厅", "MQTTTopic": "ketingkt005" },
-    { "name": "主卧空调", "dev_no": "0x01", "dev_ch": "0x02", "zone": "主卧", "MQTTTopic": "zhuwokt005" },
-    { "name": "次卧空调", "dev_no": "0x01", "dev_ch": "0x03", "zone": "次卧", "MQTTTopic": "ciwokt005" },
-    { "name": "书房空调", "dev_no": "0x01", "dev_ch": "0x01", "zone": "书房", "MQTTTopic": "shufangkt005" }
+    { "name": "客厅空调", "dev_no": "0x01", "dev_ch": "0x03", "zone": "客厅", "MQTTTopic": "ketingkt005" },
+    { "name": "主卧空调", "dev_no": "0x01", "dev_ch": "0x04", "zone": "主卧", "MQTTTopic": "zhuwokt005" },
+    { "name": "次卧空调", "dev_no": "0x01", "dev_ch": "0x05", "zone": "次卧", "MQTTTopic": "ciwokt005" },
+    { "name": "书房空调", "dev_no": "0x01", "dev_ch": "0x02", "zone": "书房", "MQTTTopic": "shufangkt005" }
   ],
   "heats": [
-    { "name": "客厅地暖", "dev_no": "0x01", "dev_ch": "0x04", "zone": "客厅", "MQTTTopic": "ketingdn005" },
-    { "name": "主卧地暖", "dev_no": "0x01", "dev_ch": "0x02", "zone": "主卧", "MQTTTopic": "zhuwodn005" },
-    { "name": "次卧地暖", "dev_no": "0x01", "dev_ch": "0x03", "zone": "次卧", "MQTTTopic": "ciwodn005" },
-    { "name": "书房地暖", "dev_no": "0x01", "dev_ch": "0x01", "zone": "书房", "MQTTTopic": "shufangdn005" }
+    { "name": "客厅地暖", "dev_no": "0x01", "dev_ch": "0x03", "zone": "客厅", "MQTTTopic": "ketingdn005" },
+    { "name": "主卧地暖", "dev_no": "0x01", "dev_ch": "0x04", "zone": "主卧", "MQTTTopic": "zhuwodn005" },
+    { "name": "次卧地暖", "dev_no": "0x01", "dev_ch": "0x05", "zone": "次卧", "MQTTTopic": "ciwodn005" },
+    { "name": "书房地暖", "dev_no": "0x01", "dev_ch": "0x02", "zone": "书房", "MQTTTopic": "shufangdn005" }
   ],
   "bemfa": {
     "enabled": true,
     "broker": "bemfa.com",
     "port": 9501,
-    "key": "123456"
+    "key": "021d92e05f514ad69c372c23759b057e"
   }
 }
