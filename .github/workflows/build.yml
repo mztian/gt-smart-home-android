@@ -6,12 +6,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      # 全局环境变量，统一给Gradle、Chaquopy、SDK调用
-      JAVA_HOME: ${{ steps.setup-jdk.outputs.java-home }}
-      ANDROID_HOME: ${{ steps.setup-android-sdk.outputs.sdk-path }}
-      ANDROID_SDK_ROOT: ${{ steps.setup-android-sdk.outputs.sdk-path }}
-      PATH: ${{ steps.setup-android-sdk.outputs.sdk-path }}/platform-tools:${{ steps.setup-python.outputs.python-path }}:${{ env.PATH }}
+    
     steps:
       # 1. 拉取源码
       - name: Checkout source
