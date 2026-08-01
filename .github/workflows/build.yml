@@ -1,0 +1,80 @@
+name: Build GT-Smart-Home-Android
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch: # 手动一键构建
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      # 全局环境变量，统一给Gradle、Chaquopy、SDK调用
+      JAVA_HOME: ${{ steps.setup-jdk.outputs.java-home }}
+      ANDROID_HOME: ${{ steps.setup-android-sdk.outputs.sdk-path }}
+      ANDROID_SDK_ROOT: ${{ steps.setup-android-sdk.outputs.sdk-path }}
+      PATH: ${{ steps.setup-android-sdk.outputs.sdk-path }}/platform-tools:${{ steps.setup-python.outputs.python-path }}:${{ env.PATH }}
+    steps:
+      # 1. 拉取源码
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      # 2. 配置JDK17（Android Gradle 8+、Chaquopy推荐JDK17）
+      - name: Setup JDK 17
+        id: setup-jdk
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      # 3. 安装 Python 3.14（Chaquopy编译强制依赖）
+      - name: Setup Python 3.14
+        id: setup-python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+          cache: 'pip'
+      - name: Verify Python & pip
+        run: |
+          python --version
+          pip --version
+          python3 --version
+
+      # 4. 一键安装完整Android SDK + Platform Tools + 构建工具
+      - name: Setup Android SDK
+        id: setup-android-sdk
+        uses: android-actions/setup-android@v3
+        with:
+          # 自动配置sdkmanager，后续自动安装依赖
+          accept-licenses: true
+      - name: Install SDK Platform & Build Tools
+        run: |
+          sdkmanager --update
+          sdkmanager "platform-tools" "build-tools;35.0.0" "platforms;android-34"
+          sdkmanager --licenses <<EOF
+y
+y
+y
+y
+EOF
+
+      # 5. Gradle权限 + 国内镜像加速，解决Chaquopy拉取Python依赖超时
+      - name: Gradle permission & mirror config
+        run: |
+          chmod +x gradlew
+          mkdir -p ~/.gradle
+          echo "org.gradle.jvmargs=-Xmx3072m -XX:MaxPermSize=1024m" >> ~/.gradle/gradle.properties
+          echo "systemProp.gradle.wrapperUser=mirror" >> ~/.gradle/gradle.properties
+          echo "systemProp.gradle.wrapperPassword=mirror" >> ~/.gradle/gradle.properties
+
+      # 6. 编译Release包（Chaquopy会自动执行Python预编译步骤）
+      - name: Gradle build assembleRelease
+        run: ./gradlew assembleRelease --stacktrace
+
+      # 7. 打包产物上传
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SmartHome-Release-APK
+          path: |
+            app/build/outputs/apk/release/*.apk
+            app/build/outputs/apk/debug/*.apk
